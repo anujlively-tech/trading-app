@@ -39,6 +39,53 @@ def get_watchlist():
     return [{"name": s.name, "symbol": s.symbol} for s in config.WATCHLIST]
 
 
+@app.get("/api/setup/find-instrument-keys")
+async def find_instrument_keys():
+    """
+    One-time setup helper: looks up the Upstox instrument_key for every stock
+    in the watchlist using your already-configured token, and returns ready-to-paste
+    config lines. Visit this URL directly in your browser once, then copy the
+    output into app/config.py.
+    """
+    if not config.UPSTOX_ACCESS_TOKEN:
+        return {"error": "UPSTOX_ACCESS_TOKEN is not set on the server yet."}
+
+    results = []
+    async with httpx.AsyncClient(timeout=15) as client:
+        for stock in config.WATCHLIST:
+            try:
+                resp = await client.get(
+                    "https://api.upstox.com/v2/instruments/search",
+                    params={"query": stock.symbol, "exchanges": "NSE", "segments": "EQ", "records": 5},
+                    headers={
+                        "Accept": "application/json",
+                        "Authorization": f"Bearer {config.UPSTOX_ACCESS_TOKEN}",
+                    },
+                )
+                data = resp.json()
+                match = next(
+                    (d for d in data.get("data", []) if d.get("trading_symbol") == stock.symbol),
+                    None,
+                )
+                if match:
+                    results.append({
+                        "name": stock.name,
+                        "symbol": stock.symbol,
+                        "instrument_key": match["instrument_key"],
+                        "config_line": f'Stock("{stock.name}", "{stock.symbol}", "{match["instrument_key"]}"),',
+                    })
+                else:
+                    results.append({
+                        "name": stock.name,
+                        "symbol": stock.symbol,
+                        "instrument_key": None,
+                        "config_line": f"# NOT FOUND — check exact symbol for {stock.name}",
+                    })
+            except Exception as e:
+                results.append({"name": stock.name, "symbol": stock.symbol, "error": str(e)})
+    return {"copy_these_lines_into_config_py": [r["config_line"] for r in results if "config_line" in r], "details": results}
+
+
 @app.get("/api/news/{category}")
 async def get_news(category: str):
     return await news.get_market_news(category)
