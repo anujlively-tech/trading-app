@@ -16,6 +16,7 @@ Endpoints:
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+import httpx
 
 from . import config, upstox_client, indicators, news, fundamentals, market_status, report
 
