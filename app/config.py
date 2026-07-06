@@ -1,8 +1,5 @@
 """
 Central configuration: watchlist, API credentials, and constants.
-Fill in UPSTOX_INSTRUMENT_KEY for each stock — these come from Upstox's
-instrument master file (downloadable from https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz).
-Match by 'name' or 'tradingsymbol' to get the instrument_key (format: NSE_EQ|ISIN).
 """
 import os
 from dataclasses import dataclass
@@ -19,39 +16,37 @@ class Stock:
     instrument_key: str    # Upstox instrument key, e.g. "NSE_EQ|INE018A01030"
     sector: str = ""
 
-# Fill instrument_key values by downloading Upstox's instrument master
-# (one-time script provided in scripts/fetch_instrument_keys.py)
 WATCHLIST = [
-    Stock("Larsen & Toubro", "LT", ""),
-    Stock("ICICI Bank", "ICICIBANK", ""),
-    Stock("Bharat Electronics", "BEL", ""),
-    Stock("KPIT Technologies", "KPITTECH", ""),
-    Stock("Persistent Systems", "PERSISTENT", ""),
-    Stock("Solar Industries", "SOLARINDS", ""),
-    Stock("Polycab India", "POLYCAB", ""),
-    Stock("Apollo Hospitals", "APOLLOHOSP", ""),
-    Stock("Info Edge", "NAUKRI", ""),
-    Stock("Poly Medicure", "POLYMED", ""),
-    Stock("ABB India", "ABB", ""),
-    Stock("Bharat Forge", "BHARATFORG", ""),
-    Stock("Trent", "TRENT", ""),
-    Stock("Titan Company", "TITAN", ""),
-    Stock("Kaynes Technology", "KAYNES", ""),
-    Stock("Dixon Technologies", "DIXON", ""),
-    Stock("Hitachi Energy India", "POWERINDIA", ""),
-    Stock("PB Fintech", "POLICYBZR", ""),
-    Stock("CDSL", "CDSL", ""),
-    Stock("HBL Engineering", "HBLENGINE", ""),
-    Stock("Azad Engineering", "AZAD", ""),
-    Stock("Data Patterns", "DATAPATTNS", ""),
-    Stock("Zen Technologies", "ZENTEC", ""),
-    Stock("MTAR Technologies", "MTARTECH", ""),
-    Stock("Jyoti CNC Automation", "JYOTICNC", ""),
-    Stock("Clean Science & Technology", "CLEAN", ""),
-    Stock("DOMS Industries", "DOMS", ""),
-    Stock("Elecon Engineering", "ELECON", ""),
-    Stock("Black Box", "BBOX", ""),
-    Stock("Aether Industries", "AETHER", ""),
+    Stock("Larsen & Toubro", "LT", "NSE_EQ|INE018A01030"),
+    Stock("ICICI Bank", "ICICIBANK", "NSE_EQ|INE090A01021"),
+    Stock("Bharat Electronics", "BEL", "NSE_EQ|INE263A01024"),
+    Stock("KPIT Technologies", "KPITTECH", "NSE_EQ|INE04I401011"),
+    Stock("Persistent Systems", "PERSISTENT", "NSE_EQ|INE262H01021"),
+    Stock("Solar Industries", "SOLARINDS", "NSE_EQ|INE343H01029"),
+    Stock("Polycab India", "POLYCAB", "NSE_EQ|INE455K01017"),
+    Stock("Apollo Hospitals", "APOLLOHOSP", "NSE_EQ|INE437A01024"),
+    Stock("Info Edge", "NAUKRI", "NSE_EQ|INE663F01032"),
+    Stock("Poly Medicure", "POLYMED", "NSE_EQ|INE205C01021"),
+    Stock("ABB India", "ABB", "NSE_EQ|INE117A01022"),
+    Stock("Bharat Forge", "BHARATFORG", "NSE_EQ|INE465A01025"),
+    Stock("Trent", "TRENT", "NSE_EQ|INE849A01020"),
+    Stock("Titan Company", "TITAN", "NSE_EQ|INE280A01028"),
+    Stock("Kaynes Technology", "KAYNES", "NSE_EQ|INE918Z01012"),
+    Stock("Dixon Technologies", "DIXON", "NSE_EQ|INE935N01020"),
+    Stock("Hitachi Energy India", "POWERINDIA", "NSE_EQ|INE07Y701011"),
+    Stock("PB Fintech", "POLICYBZR", "NSE_EQ|INE417T01026"),
+    Stock("CDSL", "CDSL", "NSE_EQ|INE736A01011"),
+    Stock("HBL Engineering", "HBLENGINE", "NSE_EQ|INE292B01021"),
+    Stock("Azad Engineering", "AZAD", "NSE_EQ|INE02IJ01035"),
+    Stock("Data Patterns", "DATAPATTNS", "NSE_EQ|INE0IX101010"),
+    Stock("Zen Technologies", "ZENTEC", "NSE_EQ|INE251B01027"),
+    Stock("MTAR Technologies", "MTARTECH", "NSE_EQ|INE864I01014"),
+    Stock("Jyoti CNC Automation", "JYOTICNC", "NSE_EQ|INE980001024"),
+    Stock("Clean Science & Technology", "CLEAN", "NSE_EQ|INE227W01023"),
+    Stock("DOMS Industries", "DOMS", "NSE_EQ|INE321T01012"),
+    Stock("Elecon Engineering", "ELECON", "NSE_EQ|INE205B01031"),
+    Stock("Black Box", "BBOX", "NSE_EQ|INE676A01027"),
+    Stock("Aether Industries", "AETHER", "NSE_EQ|INE0BWX01014"),
 ]
 
 # Global indices to track (via a free source like Yahoo Finance / Stooq since
